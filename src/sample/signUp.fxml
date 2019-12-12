@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="310.0" style="-fx-background-color: #32395d;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SignUpController">
+   <children>
+      <TextField fx:id="Login" layoutX="26.0" layoutY="107.0" prefHeight="17.0" prefWidth="256.0" style="-fx-background-color: #646984d4; -fx-background-radius: 50;" />
+      <TextField fx:id="Email" layoutX="27.0" layoutY="166.0" prefHeight="17.0" prefWidth="256.0" style="-fx-background-color: #646984d4; -fx-background-radius: 50;" />
+      <Button fx:id="vxod" layoutX="27.0" layoutY="355.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="256.0" style="-fx-background-color: #1059fe; -fx-background-radius: 50;" text="SIGN UP" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Label layoutX="45.0" layoutY="81.0" text="LOGIN" textFill="WHITE" AnchorPane.topAnchor="91.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="45.0" layoutY="145.0" text="EMAIL" textFill="WHITE" AnchorPane.topAnchor="150.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="45.0" layoutY="272.0" text="CONFIRM PASSWORD" textFill="WHITE" AnchorPane.topAnchor="276.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="45.0" layoutY="208.0" text="PASSWORD" textFill="WHITE" AnchorPane.topAnchor="213.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Button fx:id="enter" layoutX="35.0" layoutY="30.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="73.0" style="-fx-background-color: #32395d;" text="SING IN" textFill="WHITE" AnchorPane.bottomAnchor="355.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="202.0" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="registration" layoutX="121.0" layoutY="30.0" mnemonicParsing="false" style="-fx-background-color: #32395d;" text="SIGN UP" textFill="WHITE" AnchorPane.leftAnchor="121.0" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Button>
+      <Separator layoutX="126.0" layoutY="57.0" prefHeight="2.0" prefWidth="58.0" style="-fx-background-color: #1059fe;" />
+      <PasswordField fx:id="Password" layoutX="26.0" layoutY="229.0" prefHeight="25.0" prefWidth="256.0" style="-fx-background-color: #646984d4; -fx-background-radius: 50;" />
+      <PasswordField fx:id="ConfirmPassword" layoutX="26.0" layoutY="292.0" prefHeight="25.0" prefWidth="256.0" style="-fx-background-color: #646984d4; -fx-background-radius: 50;" />
+   </children>
+</AnchorPane>
