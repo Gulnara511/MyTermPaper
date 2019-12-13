@@ -15,6 +15,7 @@ import sample.animation.Population;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class ApplicationWindowController extends HTML {
@@ -49,7 +50,8 @@ public class ApplicationWindowController extends HTML {
 
     @FXML
     private Button table;
-
+    @FXML
+    private TextArea data;
     @FXML
     void initialize() throws SQLException, ClassNotFoundException, IOException {
 
@@ -57,15 +59,13 @@ public class ApplicationWindowController extends HTML {
             ArrayList<Double> gorizontal = new ArrayList<>();
             ArrayList<Double> vertical = new ArrayList<>();
             ArrayList<Double> gorizontalPoint = new ArrayList<>();
-            ObservableList<XYChart.Series<Number, Number>> list = fxChart.getData();
-            if (list != null) {
-                for (XYChart.Series<Number, Number> obsList : list) {
-                    obsList.getData().removeAll();
-                }
-            }
+
+            fxChart.getData().clear();
+
             Color c = color.getValue();
             String color_style = c.toString().substring(2, 8);
             XYChart.Series<Number, Number> series1 = new XYChart.Series<>();
+
             ResultSet resSet = null;
             String select = " SELECT * FROM " + Const.POPULATION_TABLE;
             try {
@@ -88,6 +88,8 @@ public class ApplicationWindowController extends HTML {
                 xAxis.setAutoRanging(false);
                 xAxis.setTickUnit(10);
 
+
+
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -99,23 +101,28 @@ public class ApplicationWindowController extends HTML {
                 Node node = fxChart.lookup(".default-color0.chart-series-line");
                 node.setStyle("-fx-stroke: #" + color_style + ";");
                 Node legend = fxChart.lookup(".default-color0.chart-legend-item-symbol");
-                legend.setStyle("-fx-background-color: #" + color_style + ", white;");
+                if (legend != null) {
+                legend.setStyle("-fx-background-color: #" + color_style + ", white;");}
                 for (int i = 0; i < series1.getData().size(); i++) {
                     XYChart.Data<Number, Number> round = series1.getData().get(i);
                     Node roundColor = round.getNode().lookup(".chart-line-symbol");
-                    roundColor.setStyle("-fx-background-color: #" + color_style);
+                    roundColor.setStyle("-fx-background-color: #" + color_style + "; -fx-background-radius: 0; -fx-padding: 1px;");
                 }
+
             });
+            fxChart.setLegendVisible(false);
+
             series1.setName("Численность населения России");
             if (type.getValue().equals("Линейная")) {
-                line(gorizontal, vertical, fxChart);
+                data.appendText(LocalDateTime.now() + ": Построена линейная аппроксимация, его ошибка составляет: " + line(gorizontal, vertical, fxChart) + "\n");
             } else if (type.getValue().equals("Квадратичная")) {
-                quadratic(gorizontal, vertical, fxChart);
+                data.appendText(LocalDateTime.now() + ": Построена квадратичная аппроксимация, его ошибка составляет: " + quadratic(gorizontal, vertical, fxChart) + "\n");
             } else if (type.getValue().equals("Логарифмическая")) {
-                logarifm(gorizontal, vertical, fxChart);
+                data.appendText(LocalDateTime.now() + ": Построена логарифмическая аппроксимация, его ошибка составляет: " + logarifm(gorizontal, vertical, fxChart) + "\n");
             } else if (type.getValue().equals("Экспоненциальная")) {
-                exponenta(gorizontal, vertical, fxChart);
+                data.appendText(LocalDateTime.now() + ": Построена экспоненциальная аппроксимация, его ошибка составляет: " + exponenta(gorizontal, vertical, fxChart) + "\n");
             }
+            data.appendText(LocalDateTime.now() + "  Выбран цвет для графика: " + color_style + "\n");
         });
 
         table.setOnAction((event) -> {
@@ -135,10 +142,11 @@ public class ApplicationWindowController extends HTML {
 
             // заполняем таблицу данными
             tablePopulation.setItems(population);
+            data.appendText(LocalDateTime.now() + "  Выведены данные в таблицу\n");
         });
     }
 
-    public static void line(ArrayList<Double> x, ArrayList<Double> y, LineChart fxChart) {
+    public static double line(ArrayList<Double> x, ArrayList<Double> y, LineChart fxChart) {
         double n = x.size();
         double sumXSquare = 0;
         double sumX = 0;
@@ -166,9 +174,10 @@ public class ApplicationWindowController extends HTML {
 
         double A = (1/n)*Aa*100;
         System.out.println("Средняя ошибка аппроксимации: " + A);
+        return A;
     }
 
-    public static void quadratic(ArrayList<Double> x, ArrayList<Double> y, LineChart fxChart) {
+    public static double quadratic(ArrayList<Double> x, ArrayList<Double> y, LineChart fxChart) {
         double n = x.size();
         double sumY = 0;
         double sumX = 0;
@@ -177,6 +186,7 @@ public class ApplicationWindowController extends HTML {
         double sumXFourth = 0;
         double sumXY = 0;
         double sumXSquareY = 0;
+        double Aa = 0;
 
         for (int i = 0; i < x.size(); i++) {
             sumX += x.get(i);
@@ -254,19 +264,27 @@ public class ApplicationWindowController extends HTML {
         }
         XYChart.Series<Double, Double> series3 = new XYChart.Series<>();
 
-        for (int i = 0; i < x.size(); i++) {
+        for (int i = 5; i < x.size()-5; i++) {
             series3.getData().add(new XYChart.Data(x.get(i), a * x.get(i) * x.get(i) + b * x.get(i) + c));
         }
         fxChart.getData().add(series3);
 
+        //Ошибка аппроксимации
+        for (int i = 0; i < x.size(); i++) {
+            Aa += Math.abs((y.get(i)-(a * x.get(i) * x.get(i) + b * x.get(i) + c))/y.get(i));
+        }
 
-        XYChart.Series<Double, Double> series4 = new XYChart.Series<>();
-        series4.getData().add(new XYChart.Data(1900, 60000000));
-        fxChart.getData().add(series4);
-        fxChart.getData().remove(series4);
+        double A = (1/n)*Aa*100;
+        System.out.println("Средняя ошибка аппроксимации: " + A);
+        return A;
+
+//        XYChart.Series<Double, Double> series4 = new XYChart.Series<>();
+//        series4.getData().add(new XYChart.Data(1900, 60000000));
+//        fxChart.getData().add(series4);
+//        fxChart.getData().remove(series4);
     }
 
-    public static void logarifm(ArrayList<Double> x, ArrayList<Double> y, LineChart fxChart) {
+    public static double logarifm(ArrayList<Double> x, ArrayList<Double> y, LineChart fxChart) {
         double n = x.size();
         double sumY = 0;
         double sumX = 0;
@@ -299,9 +317,10 @@ public class ApplicationWindowController extends HTML {
 
         double A = (1/n)*Aa*100;
         System.out.println("Средняя ошибка аппроксимации: " + A);
+        return A;
     }
 
-    public static void exponenta(ArrayList<Double> x, ArrayList<Double> y, LineChart fxChart) {
+    public static double exponenta(ArrayList<Double> x, ArrayList<Double> y, LineChart fxChart) {
         double n = x.size();
         double sumY = 0;
         double sumX = 0;
@@ -333,6 +352,7 @@ public class ApplicationWindowController extends HTML {
 
         double A = (1/n)*Aa*100;
         System.out.println("Средняя ошибка аппроксимации: " + A);
+        return A;
     }
 
     private ArrayList<String> initData() throws SQLException, IOException, ClassNotFoundException {

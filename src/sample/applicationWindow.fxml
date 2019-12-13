@@ -41,7 +41,7 @@
                </FXCollections>
            </items>
        </ComboBox>
-      <TextArea layoutX="950.0" layoutY="456.0" prefHeight="144.0" prefWidth="250.0" />
+      <TextArea layoutX="950.0" layoutY="456.0" prefHeight="144.0" prefWidth="250.0" fx:id = "data"/>
 
    </children>
 </AnchorPane>
