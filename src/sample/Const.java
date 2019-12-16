@@ -9,6 +9,8 @@ public class Const {
     public static final String POPULATION_TABLE = "POPULATION";
     public static final String POPULATION_YEAR = "YEAR";
     public static final String POPULATION_QUANTITY = "QUANTITY";
-
-
+    public static final String SAVE_TABLE = "save";
+    public static final String SAVE_LOGIN = "login";
+    public static final String SAVE_ACTION = "action";
+    public static final String SAVE_TIME = "time";
 }

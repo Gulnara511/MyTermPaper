@@ -37,7 +37,6 @@ public class SignUpController {
     void initialize() {
 
         vxod.setOnAction(event -> {
-
             try {
                 signUpNewUser();
                 vxod.getScene().getWindow().hide();

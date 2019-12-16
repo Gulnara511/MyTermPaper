@@ -7,14 +7,16 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ApplicationWindowController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ApplicationWindowController">
    <children>
-      <LineChart fx:id="fxChart" prefHeight="600.0" prefWidth="962.0">
+      <LineChart fx:id="fxChart" prefHeight="680.0" prefWidth="951.0">
         <xAxis>
           <NumberAxis side="BOTTOM" fx:id="xAxis" />
         </xAxis>
@@ -22,16 +24,16 @@
           <NumberAxis fx:id="yAxis" side="LEFT" />
         </yAxis>
       </LineChart>
-      <Button fx:id="graf" layoutX="991.0" layoutY="423.0" mnemonicParsing="false" text="Вывести данные на график " />
-      <TableView fx:id="tablePopulation" layoutX="950.0" prefHeight="356.0" prefWidth="250.0">
+      <Button fx:id="graf" layoutX="1085.0" layoutY="436.0" mnemonicParsing="false" text="Показать на графике" />
+      <TableView fx:id="tablePopulation" layoutX="950.0" prefHeight="356.0" prefWidth="281.0">
         <columns>
-          <TableColumn fx:id="yearColumn" prefWidth="99.0" text="Год" />
-          <TableColumn fx:id="quantityColumn" prefWidth="148.0" text="Население" />
+          <TableColumn fx:id="yearColumn" prefWidth="126.0" text="Год" />
+          <TableColumn fx:id="quantityColumn" prefWidth="153.0" text="Население" />
         </columns>
       </TableView>
-      <Button fx:id="table" layoutX="993.0" layoutY="390.0" mnemonicParsing="false" text="Вывести данные в таблицу" />
-      <ColorPicker fx:id="color" layoutX="1101.0" layoutY="356.0" prefHeight="25.0" prefWidth="99.0" />
-       <ComboBox fx:id="type" layoutX="950.0" layoutY="356.0" prefWidth="150.0" promptText="Тип регрессии">
+      <Button fx:id="table" layoutX="950.0" layoutY="436.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Показать в таблице" />
+      <ColorPicker fx:id="color" layoutX="1109.0" layoutY="366.0" prefHeight="25.0" prefWidth="107.0" />
+       <ComboBox fx:id="type" layoutX="950.0" layoutY="366.0" prefHeight="25.0" prefWidth="149.0" promptText="Тип регрессии">
            <items>
                <FXCollections fx:factory="observableArrayList">
                    <String fx:value="Линейная" />
@@ -41,7 +43,26 @@
                </FXCollections>
            </items>
        </ComboBox>
-      <TextArea layoutX="950.0" layoutY="456.0" prefHeight="144.0" prefWidth="250.0" fx:id = "data"/>
-
+      <TextArea fx:id="data" layoutX="950.0" layoutY="494.0" prefHeight="140.0" prefWidth="281.0" />
+      <Button fx:id="SAVE" layoutX="1041.0" layoutY="641.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="99.0" text="Сохранить" />
+      <Label fx:id="USER" layoutX="951.0" layoutY="468.0" prefHeight="17.0" prefWidth="250.0" text="Пользователь: ">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+       <ComboBox fx:id="period" layoutX="951.0" layoutY="401.0" prefHeight="25.0" prefWidth="161.0" promptText="Выбрать данные до">
+           <items>
+               <FXCollections fx:factory="observableArrayList">
+                   <String fx:value="1950" />
+                   <String fx:value="1960" />
+                   <String fx:value="1970" />
+                   <String fx:value="1980" />
+                   <String fx:value="1990" />
+                   <String fx:value="2000" />
+                   <String fx:value="2010" />
+                   <String fx:value="2018" />
+               </FXCollections>
+           </items>
+       </ComboBox>
    </children>
 </AnchorPane>

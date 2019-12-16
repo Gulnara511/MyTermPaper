@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -14,51 +15,48 @@ import javafx.scene.paint.Color;
 import sample.animation.Population;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class ApplicationWindowController extends HTML {
-
+public class ApplicationWindowController extends HTML
+{
     private ObservableList<Population> population = FXCollections.observableArrayList();
     @FXML
+    private ComboBox period;
+    @FXML
     private ComboBox type;
-
     @FXML
     private ColorPicker color;
-
     @FXML
     private TableView<Population> tablePopulation;
-
     @FXML
     private TableColumn yearColumn;
-
     @FXML
     private TableColumn quantityColumn;
-
     @FXML
     LineChart<Number, Number> fxChart;
-
     @FXML
     NumberAxis xAxis;
-
     @FXML
     NumberAxis yAxis;
-
     @FXML
     private Button graf;
-
     @FXML
     private Button table;
     @FXML
     private TextArea data;
     @FXML
+     Label USER;
+    @FXML
+     Button SAVE;
+    @FXML
     void initialize() throws SQLException, ClassNotFoundException, IOException {
-
         graf.setOnAction((event) -> {
             ArrayList<Double> gorizontal = new ArrayList<>();
             ArrayList<Double> vertical = new ArrayList<>();
-            ArrayList<Double> gorizontalPoint = new ArrayList<>();
 
             fxChart.getData().clear();
 
@@ -72,24 +70,19 @@ public class ApplicationWindowController extends HTML {
 
                 PreparedStatement prSt = getDbConnection().prepareStatement(select);
                 resSet = prSt.executeQuery();
-                while (resSet.next()) {
+                while (resSet.next()&&!resSet.getString(1).equals(period.getValue())) {
                     series1.getData().add(new XYChart.Data<>(Integer.parseInt(resSet.getString(1)), Integer.parseInt(resSet.getString(2).replaceAll(" ", ""))));
                     gorizontal.add(Double.parseDouble(resSet.getString(1)));
                     vertical.add(Double.parseDouble(resSet.getString(2).replaceAll(" ", "")));
                 }
-                for (double i = 0; i < gorizontal.size(); i++) {
-                    gorizontalPoint.add(i + 1);
 
-                }
                 System.out.println("Значения по горизонтали" + gorizontal);
                 System.out.println("Значения по вертикали" + vertical);
                 xAxis.setLowerBound(1890);
-                xAxis.setUpperBound(2030);
+                xAxis.setUpperBound(Double.parseDouble(String.valueOf(period.getValue())));
                 xAxis.setAutoRanging(false);
                 xAxis.setTickUnit(10);
-
-
-
+                data.appendText("Выбран диапозон до " + period.getValue() + " года");
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -114,15 +107,15 @@ public class ApplicationWindowController extends HTML {
 
             series1.setName("Численность населения России");
             if (type.getValue().equals("Линейная")) {
-                data.appendText(LocalDateTime.now() + ": Построена линейная аппроксимация, его ошибка составляет: " + line(gorizontal, vertical, fxChart) + "\n");
+                data.appendText(" Построена линейная аппроксимация, его ошибка составляет: " + line(gorizontal, vertical, fxChart) + "\n");
             } else if (type.getValue().equals("Квадратичная")) {
-                data.appendText(LocalDateTime.now() + ": Построена квадратичная аппроксимация, его ошибка составляет: " + quadratic(gorizontal, vertical, fxChart) + "\n");
+                data.appendText(" Построена квадратичная аппроксимация, его ошибка составляет: " + quadratic(gorizontal, vertical, fxChart) + "\n");
             } else if (type.getValue().equals("Логарифмическая")) {
-                data.appendText(LocalDateTime.now() + ": Построена логарифмическая аппроксимация, его ошибка составляет: " + logarifm(gorizontal, vertical, fxChart) + "\n");
+                data.appendText(" Построена логарифмическая аппроксимация, его ошибка составляет: " + logarifm(gorizontal, vertical, fxChart) + "\n");
             } else if (type.getValue().equals("Экспоненциальная")) {
-                data.appendText(LocalDateTime.now() + ": Построена экспоненциальная аппроксимация, его ошибка составляет: " + exponenta(gorizontal, vertical, fxChart) + "\n");
+                data.appendText(" Построена экспоненциальная аппроксимация, его ошибка составляет: " + exponenta(gorizontal, vertical, fxChart) + "\n");
             }
-            data.appendText(LocalDateTime.now() + "  Выбран цвет для графика: " + color_style + "\n");
+            data.appendText(" Выбран цвет для графика: " + color_style + "\n");
         });
 
         table.setOnAction((event) -> {
@@ -142,7 +135,40 @@ public class ApplicationWindowController extends HTML {
 
             // заполняем таблицу данными
             tablePopulation.setItems(population);
-            data.appendText(LocalDateTime.now() + "  Выведены данные в таблицу\n");
+            data.appendText("  Выведены данные в таблицу\n");
+        });
+
+        SAVE.setOnAction(event -> {
+            String insert = " INSERT INTO " + Const.SAVE_TABLE + " (" + Const.SAVE_LOGIN + "," + Const.SAVE_ACTION + "," + Const.SAVE_TIME + ") " + " VALUES(?,?,?) ";
+            PreparedStatement prSt = null;
+            try {
+                prSt = getDbConnection().prepareStatement(insert);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                prSt.setString(1, USER.getText());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                prSt.setString(2, data.getText());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                prSt.setString(3, String.valueOf(LocalDateTime.now()));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                prSt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -370,5 +396,9 @@ public class ApplicationWindowController extends HTML {
             population.add(new Population(X.get(i), Y.get(i)));
         }
         return XY;
+    }
+
+    public void  usersLogin (String text) {
+        USER.setText(text);
     }
 }

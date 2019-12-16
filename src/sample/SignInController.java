@@ -14,8 +14,9 @@ import sample.animation.Shake;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class SignInController {
+public class SignInController extends ApplicationWindowController{
     @FXML
     private Button vxod;
     @FXML
@@ -33,11 +34,14 @@ public class SignInController {
     @FXML
     void initialize () {
         vxod.setOnAction((event) -> {
+            System.out.println(login.getText());
+
             String loginText = login.getText().trim();
             String passwordText = singInPassword.getText().trim();
             if(!loginText.equals("")&&!passwordText.equals("")) {
                 try {
                     loginUser(loginText,passwordText);
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -46,6 +50,7 @@ public class SignInController {
             } else {
                 System.out.println("ERROR");
             }
+
         });
 
         registration.setOnAction(event -> {
@@ -54,7 +59,7 @@ public class SignInController {
 
     }
 
-    private void loginUser(String loginText, String passwordText) throws SQLException, ClassNotFoundException {
+    private String loginUser(String loginText, String passwordText) throws SQLException, ClassNotFoundException {
         DatabaseHandler dbHandler = new DatabaseHandler();
         User user = new User();
         user.setLogin(loginText);
@@ -69,6 +74,7 @@ public class SignInController {
         }
         if (counter>=1) {
             vxod.setOnAction(event -> {
+
                 OpenNewScene(vxod,"/sample/applicationWindow.fxml");
 
             });
@@ -78,6 +84,7 @@ public class SignInController {
             userLoginAnimation.playAnim();
             userPasswordAnimation.playAnim();
         }
+        return login.getText();
     }
     public void OpenNewScene (Button btn,String window) {
         btn.getScene().getWindow().hide();
@@ -90,6 +97,8 @@ public class SignInController {
         }
 
         Parent root = loader.getRoot();
+        ApplicationWindowController applicationWindowController = loader.getController();
+        applicationWindowController.usersLogin(login.getText());
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
 
