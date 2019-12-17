@@ -16,7 +16,7 @@
 
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ApplicationWindowController">
    <children>
-      <LineChart fx:id="fxChart" prefHeight="680.0" prefWidth="951.0">
+      <LineChart fx:id="fxChart" prefHeight="558.0" prefWidth="951.0">
         <xAxis>
           <NumberAxis side="BOTTOM" fx:id="xAxis" />
         </xAxis>
@@ -24,16 +24,16 @@
           <NumberAxis fx:id="yAxis" side="LEFT" />
         </yAxis>
       </LineChart>
-      <Button fx:id="graf" layoutX="1085.0" layoutY="436.0" mnemonicParsing="false" text="Показать на графике" />
-      <TableView fx:id="tablePopulation" layoutX="950.0" prefHeight="356.0" prefWidth="281.0">
+      <Button fx:id="graf" layoutX="1081.0" layoutY="486.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" text="Показать на графике" AnchorPane.rightAnchor="5.0" />
+      <TableView fx:id="tablePopulation" layoutX="950.0" prefHeight="408.0" prefWidth="281.0">
         <columns>
           <TableColumn fx:id="yearColumn" prefWidth="126.0" text="Год" />
           <TableColumn fx:id="quantityColumn" prefWidth="153.0" text="Население" />
         </columns>
       </TableView>
-      <Button fx:id="table" layoutX="950.0" layoutY="436.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Показать в таблице" />
-      <ColorPicker fx:id="color" layoutX="1109.0" layoutY="366.0" prefHeight="25.0" prefWidth="107.0" />
-       <ComboBox fx:id="type" layoutX="950.0" layoutY="366.0" prefHeight="25.0" prefWidth="149.0" promptText="Тип регрессии">
+      <Button fx:id="table" layoutX="950.0" layoutY="486.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Показать в таблице" />
+      <ColorPicker fx:id="color" layoutX="951.0" layoutY="419.0" prefHeight="25.0" prefWidth="109.0" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="419.0" />
+       <ComboBox fx:id="type" layoutX="950.0" layoutY="452.0" prefHeight="25.0" prefWidth="126.0" promptText="Тип регрессии">
            <items>
                <FXCollections fx:factory="observableArrayList">
                    <String fx:value="Линейная" />
@@ -43,14 +43,14 @@
                </FXCollections>
            </items>
        </ComboBox>
-      <TextArea fx:id="data" layoutX="950.0" layoutY="494.0" prefHeight="140.0" prefWidth="281.0" />
-      <Button fx:id="SAVE" layoutX="1041.0" layoutY="641.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="99.0" text="Сохранить" />
-      <Label fx:id="USER" layoutX="951.0" layoutY="468.0" prefHeight="17.0" prefWidth="250.0" text="Пользователь: ">
+      <TextArea fx:id="data" layoutX="14.0" layoutY="570.0" prefHeight="96.0" prefWidth="569.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <Button fx:id="SAVE" layoutX="996.0" layoutY="524.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="190.0" text="Сохранить полученные данные" />
+      <Label fx:id="USER" layoutX="14.0" layoutY="549.0" prefHeight="19.0" prefWidth="343.0" text="Пользователь: ">
          <font>
             <Font size="13.0" />
          </font>
       </Label>
-       <ComboBox fx:id="period" layoutX="951.0" layoutY="401.0" prefHeight="25.0" prefWidth="161.0" promptText="Выбрать данные до">
+       <ComboBox fx:id="period" layoutX="1066.0" layoutY="419.0" prefHeight="25.0" prefWidth="158.0" promptText="Выбрать данные до" AnchorPane.leftAnchor="1066.0" AnchorPane.rightAnchor="5.0">
            <items>
                <FXCollections fx:factory="observableArrayList">
                    <String fx:value="1950" />
@@ -64,5 +64,6 @@
                </FXCollections>
            </items>
        </ComboBox>
+      <Button fx:id="best" layoutX="1081.0" layoutY="452.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" text="Лучшая аппроксимация" AnchorPane.rightAnchor="5.0" />
    </children>
 </AnchorPane>

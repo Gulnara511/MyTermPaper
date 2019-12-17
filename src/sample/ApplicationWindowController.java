@@ -51,9 +51,12 @@ public class ApplicationWindowController extends HTML
     @FXML
      Label USER;
     @FXML
+    private Button best;
+    @FXML
      Button SAVE;
     @FXML
     void initialize() throws SQLException, ClassNotFoundException, IOException {
+        ArrayList<Double> value = new ArrayList<>();
         graf.setOnAction((event) -> {
             ArrayList<Double> gorizontal = new ArrayList<>();
             ArrayList<Double> vertical = new ArrayList<>();
@@ -82,7 +85,7 @@ public class ApplicationWindowController extends HTML
                 xAxis.setUpperBound(Double.parseDouble(String.valueOf(period.getValue())));
                 xAxis.setAutoRanging(false);
                 xAxis.setTickUnit(10);
-                data.appendText("Выбран диапозон до " + period.getValue() + " года");
+                data.appendText("Выбран диапозон до " + period.getValue() + " года \n");
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -104,18 +107,30 @@ public class ApplicationWindowController extends HTML
 
             });
             fxChart.setLegendVisible(false);
+            double lineValue;
+            double quadraticValue;
+            double logarifmValue;
+            double exponentaValue;
 
             series1.setName("Численность населения России");
             if (type.getValue().equals("Линейная")) {
-                data.appendText(" Построена линейная аппроксимация, его ошибка составляет: " + line(gorizontal, vertical, fxChart) + "\n");
+                lineValue = line(gorizontal, vertical, fxChart);
+                value.add(lineValue);
+                data.appendText("Построена линейная аппроксимация, его ошибка составляет: " + line(gorizontal, vertical, fxChart) + "\n");
             } else if (type.getValue().equals("Квадратичная")) {
-                data.appendText(" Построена квадратичная аппроксимация, его ошибка составляет: " + quadratic(gorizontal, vertical, fxChart) + "\n");
+                quadraticValue = quadratic(gorizontal, vertical, fxChart);
+                value.add(quadraticValue);
+                data.appendText("Построена квадратичная аппроксимация, его ошибка составляет: " + quadratic(gorizontal, vertical, fxChart) + "\n");
             } else if (type.getValue().equals("Логарифмическая")) {
-                data.appendText(" Построена логарифмическая аппроксимация, его ошибка составляет: " + logarifm(gorizontal, vertical, fxChart) + "\n");
+                logarifmValue = logarifm(gorizontal, vertical, fxChart);
+                value.add(logarifmValue);
+                data.appendText("Построена логарифмическая аппроксимация, его ошибка составляет: " + logarifm(gorizontal, vertical, fxChart) + "\n");
             } else if (type.getValue().equals("Экспоненциальная")) {
-                data.appendText(" Построена экспоненциальная аппроксимация, его ошибка составляет: " + exponenta(gorizontal, vertical, fxChart) + "\n");
+                exponentaValue = exponenta(gorizontal, vertical, fxChart);
+                value.add(exponentaValue);
+                data.appendText("Построена экспоненциальная аппроксимация, его ошибка составляет: " + exponenta(gorizontal, vertical, fxChart) + "\n");
             }
-            data.appendText(" Выбран цвет для графика: " + color_style + "\n");
+            data.appendText("Выбран цвет для графика: " + color_style + "\n");
         });
 
         table.setOnAction((event) -> {
@@ -135,7 +150,7 @@ public class ApplicationWindowController extends HTML
 
             // заполняем таблицу данными
             tablePopulation.setItems(population);
-            data.appendText("  Выведены данные в таблицу\n");
+            data.appendText("Выведены данные в таблицу\n");
         });
 
         SAVE.setOnAction(event -> {
@@ -170,6 +185,9 @@ public class ApplicationWindowController extends HTML
                 e.printStackTrace();
             }
         });
+        best.setOnAction(event -> {
+            data.appendText("Наилучшая аппроксимация: " + getMin(value) + "\n");
+        });
     }
 
     public static double line(ArrayList<Double> x, ArrayList<Double> y, LineChart fxChart) {
@@ -197,7 +215,6 @@ public class ApplicationWindowController extends HTML
         for (int i = 0; i < x.size(); i++) {
             Aa += Math.abs((y.get(i)-(a*x.get(i)+b))/y.get(i));
         }
-
         double A = (1/n)*Aa*100;
         System.out.println("Средняя ошибка аппроксимации: " + A);
         return A;
@@ -399,6 +416,15 @@ public class ApplicationWindowController extends HTML
     }
 
     public void  usersLogin (String text) {
-        USER.setText(text);
+        USER.setText(USER.getText() + " " + text);
+    }
+    public static double getMin(ArrayList<Double> value){
+       double minValue = value.get(0);
+        for(int i=1;i<value.size();i++){
+            if(value.get(i) < minValue){
+                minValue = value.get(i);
+            }
+        }
+        return minValue;
     }
 }

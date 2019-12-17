@@ -55,35 +55,6 @@ public class SignUpController {
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-
-//            vxod.getScene().getWindow().hide();
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("/sample/applicationWindow.fxml"));
-//            try {
-//                loader.load();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            Parent root = loader.getRoot();
-//            Stage stage = new Stage();
-//            stage.setScene(new Scene(root));
-//            stage.showAndWait();
-//        });
-//        enter.setOnAction(event -> {
-//            enter.getScene().getWindow().hide();
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("/sample/signIn.fxml"));
-//            try {
-//                loader.load();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            Parent root = loader.getRoot();
-//            Stage stage = new Stage();
-//            stage.setScene(new Scene(root));
-//            stage.showAndWait();
         });
 
     }

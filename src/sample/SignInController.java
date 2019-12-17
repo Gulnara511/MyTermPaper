@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -14,7 +13,6 @@ import sample.animation.Shake;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class SignInController extends ApplicationWindowController{
     @FXML
@@ -53,8 +51,8 @@ public class SignInController extends ApplicationWindowController{
 
         });
 
-        registration.setOnAction(event -> {
-            OpenNewScene(registration,"/sample/signUp.fxml");
+        registration.setOnAction((event) -> {
+            OpenNewScene(registration, "/sample/signUp.fxml");
         });
 
     }
@@ -74,9 +72,7 @@ public class SignInController extends ApplicationWindowController{
         }
         if (counter>=1) {
             vxod.setOnAction(event -> {
-
-                OpenNewScene(vxod,"/sample/applicationWindow.fxml");
-
+                OpenNewScene(vxod, "/sample/applicationWindow.fxml");
             });
         } else {
             Shake userLoginAnimation = new Shake(login);
@@ -97,8 +93,9 @@ public class SignInController extends ApplicationWindowController{
         }
 
         Parent root = loader.getRoot();
+        if (btn.getText().equals("SIGN IN")) {
         ApplicationWindowController applicationWindowController = loader.getController();
-        applicationWindowController.usersLogin(login.getText());
+        applicationWindowController.usersLogin(login.getText());}
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
 
